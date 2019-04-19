@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baizhi.mapper.BannerMapper">
+
+    <!--<resultMap id="menuResultMap" type="com.baizhi.entity.Menu">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="iconCls" column="icon_cls"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="jspUrl" column="jsp_url"/>
+        <collection property="children" javaType="java.util.List" ofType="com.baizhi.entity.Menu">
+            <result property="id" column="id_"/>
+            <result property="title" column="title_"/>
+            <result property="iconCls" column="icon_cls_"/>
+            <result property="parentId" column="parent_id_"/>
+            <result property="jspUrl" column="jsp_url_"/>
+        </collection>
+    </resultMap>-->
+
+    <!--<select id="insert1" resultType="com.baizhi.entity.Banner">
+        insert into banner
+        values (#{title}, {imgPath}, sysdate, 0)
+    </select>-->
+
+
+</mapper>
