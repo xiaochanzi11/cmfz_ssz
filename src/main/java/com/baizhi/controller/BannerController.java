@@ -70,6 +70,8 @@ public class BannerController {
         }
 
         return map;
+
+
     }
 
     @RequestMapping("update")
