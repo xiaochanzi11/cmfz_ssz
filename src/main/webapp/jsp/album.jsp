@@ -101,6 +101,7 @@
                                 if (theTime1 > 60) {
                                     theTime2 = parseInt(theTime1 / 60);
                                     theTime1 = parseInt(theTime1 % 60);
+
                                 }
                             }
                             var result = "" + parseInt(theTime) + "秒";
