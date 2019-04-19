@@ -1,6 +1,7 @@
 package com.baizhi.controller;
 
 import com.baizhi.entity.Chapter;
+import com.baizhi.mapper.ChapterMapper;
 import com.baizhi.service.ChapterService;
 import com.baizhi.util.AudioUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,14 @@ public class ChapterController {
     @Autowired
     ChapterService chapterService;
 
+    @Autowired
+    ChapterMapper chapterMapper;
+
+    @RequestMapping("selectOne")
+    public Chapter selectOne(Chapter chapter) {
+        chapter = chapterMapper.selectOne(chapter);
+        return chapter;
+    }
 
     @RequestMapping("insert")
     public Map addchapter(MultipartFile file, Chapter chapter) throws IOException {

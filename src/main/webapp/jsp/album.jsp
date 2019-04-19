@@ -3,6 +3,17 @@
 <script>
     $(function () {
 
+        // 音乐对话框
+        $("#dd_music").dialog({
+            title: "播放音乐对话框",
+            width: 300,
+            height: 200,
+            //buttons: "#addBtn",
+            closed: true,
+            minimizable: true,
+            collapsible: true,
+        })
+
         var tb = [{
             iconCls: 'icon-search',
             text: '专辑详情',
@@ -50,6 +61,21 @@
                     c = c.id;
                     //alert(c)
                     downLoad(c);
+                }
+
+
+            }
+        }, '-', {
+            iconCls: 'icon-edit',
+            text: '音频在线播放',
+            handler: function () {
+                var c = $('#tt_album').treegrid('getSelected');
+                if (c.albumId == null) {
+                    alert("请选择一个章节")
+                } else {
+                    c = c.id;
+                    //alert(c)
+                    openMusic(c);
                 }
 
 
@@ -199,10 +225,28 @@
         window.location.href = ("${pageContext.request.contextPath}/chapter/download.do?id=" + c)
     }
 
+    function openMusic(c) {
+        //console.log(c)
+        $.ajax({
+            url: "${pageContext.request.contextPath}/chapter/selectOne",
+            type: "get",
+            data: "id=" + c,
+            dataType: "json",
+            success: function (data) {
+                var src = '${pageContext.request.contextPath}/jsp/chapter/' + data.downloadPath
+                //console.log(src)
+                $('#music').attr('src', src)
+                $('#dd_music').dialog('open');
+            }
+        })
+
+
+    }
+
 
 </script>
 <table id="tt_album" style="width:600px;height:400px"></table>
-<div id="dd_album_display" class="easyui-dialog" title="My Dialog" style="width:400px;height:400px;"
+<div id="dd_album_display" class="easyui-dialog" title="专辑详情" style="width:400px;height:400px;"
      data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,
             buttons:[{
 				text:'确定',
@@ -220,7 +264,7 @@
     <p>专辑封面 :<img id="albumImg" width="70px" height="100px"/></p>
 
 </div>
-<div id="dd_album" class="easyui-dialog" title="My Dialog" style="width:400px;height:400px;"
+<div id="dd_album" class="easyui-dialog" title="添加专辑" style="width:400px;height:400px;"
      data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,
             buttons:[{
 				text:'保存',
@@ -264,7 +308,7 @@
 </div>
 
 //添加章节
-<div id="dd_chapter" class="easyui-dialog" title="My Dialog" style="width:400px;height:400px;"
+<div id="dd_chapter" class="easyui-dialog" title="添加章节" style="width:400px;height:400px;"
      data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,
             buttons:[{
 				text:'保存',
@@ -292,4 +336,18 @@
         <input class="easyui-filebox" style="width:150px" name="file">
     </form>
 
+</div>
+
+//音频播放
+<div id="dd_music" title="添加专辑" style="width:400px;height:400px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,
+            buttons:[{
+				text:'关闭',
+				handler:function(){
+				    $('#dd_music').dialog('close');
+				}
+			}]">
+    <audio id="music" controls="controls" preload="auto" autoplay="autoplay" loop="loop">
+        您浏览器不支持HTML5音频播放器
+    </audio>
 </div>

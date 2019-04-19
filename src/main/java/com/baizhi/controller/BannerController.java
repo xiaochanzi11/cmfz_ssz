@@ -68,10 +68,7 @@ public class BannerController {
             e.printStackTrace();
             map.put("flag", false);
         }
-
         return map;
-
-
     }
 
     @RequestMapping("update")
