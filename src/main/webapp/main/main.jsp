@@ -20,15 +20,11 @@
                 url: '${pageContext.request.contextPath}/menu/select',
                 dataType: 'JSON',
                 success: function (data) {
-                    console.log(data);
+                    //console.log(data);
                     //第一个参数是要遍历的集合对象，函数中第一个参数是遍历的下标 注意：两次遍历的下标名字不要相同  第二个参数是每次遍历出来的对象
                     $.each(data, function (index1, first) {
-                        //console.log(first.title)
-                        //<img src=${pageContext.request.contextPath}/themes/IconsExtension/"+second.iconCls+".png/>
                         var c = "<div align='center'>";
                         $.each(first.children, function (index2, second) {
-                            //console.log(second.title)
-                            //js中无法直接传递一个json对象   需要将json对象转化为json字符串再进行传输
                             var child = JSON.stringify(second);
                             c += "<p><a class='easyui-linkbutton' onclick='addTabs(" + child + ")'>" + second.title + "</a></p>";
                         })
@@ -47,6 +43,7 @@
         function addTabs(second) {
             //alert()
             // add a new tab panel
+            var url = '${pageContext.request.contextPath}/jsp/' + second.jspUrl
             var isExists = $('#tt').tabs('exists', second.title);
             if (!isExists) {
                 $('#tt').tabs('add', {
@@ -57,7 +54,11 @@
                     tools: [{
                         iconCls: 'icon-mini-refresh',
                         handler: function () {
-
+                            //获得当前选中的tab
+                            var tab = $('#tt').tabs('getSelected');
+                            //获得当前选中的tab 的href
+                            var url = $(tab.panel('options')).attr('href');
+                            tab.panel('refresh', url);
                         }
                     }]
                 });

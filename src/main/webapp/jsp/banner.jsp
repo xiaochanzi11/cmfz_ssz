@@ -21,7 +21,6 @@
             iconCls: 'icon-delete',
             text: '删除',
             handler: function () {
-
                 $('#dg_banner').edatagrid('destroyRow');
             }
         }, '-', {
@@ -30,6 +29,23 @@
             handler: function () {
                 //alert('帮助按钮')
                 $('#dg_banner').edatagrid('saveRow');
+            }
+        }, '-', {
+            iconCls: 'icon-edit',
+            text: '数据导出',
+            handler: function () {
+                /*var c = $('#dg_banner').treegrid('getSelected');*/
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/banner/exportXls",
+                    /*type: "get",
+                    data: "banner=" + c,
+                    dataType: "json",*/
+                    /*success: function (data) {
+
+                    }*/
+                })
+
+
             }
         }];
 
@@ -42,6 +58,7 @@
             fit: true,
             fitColumns: true,
             pagination: true,
+            autoSave: true,
             pageSize: 5,
             pageList: [5, 10, 25, 30, 35],
             columns: [[
@@ -82,7 +99,6 @@
             url: '${pageContext.request.contextPath}/banner/insert',
             onSubmit: function () {
 
-
             },
             success: function (data) {
                 data = JSON.parse(data);
@@ -103,7 +119,9 @@
 
 </script>
 <table id="dg_banner"></table>
-<div id="dd_banner" class="easyui-dialog" title="My Dialog" style="width:400px;height:200px;"
+
+//添加
+<div id="dd_banner" class="easyui-dialog" title="添加图片" style="width:400px;height:200px;"
      data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,
             buttons:[{
 				text:'保存',
@@ -122,11 +140,6 @@
             <label for="name">标题:</label>
             <input id="name" class="easyui-validatebox" type="text" name="title" data-options="required:true"/>
         </div>
-        <%--<input type="hidden" name="createDate" value='<c:out>${currentTime}</c:out>'/>--%>
-        <%--<div>
-            <label for="email">Email:</label>
-            <input id="email" class="easyui-validatebox" type="text" name="email" data-options="validType:'email'"/>
-        </div>--%>
         <input class="easyui-filebox" name="image" style="width:200px">
     </form>
 </div>

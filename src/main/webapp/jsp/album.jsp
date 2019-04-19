@@ -41,7 +41,7 @@
             }
         }, '-', {
             iconCls: 'icon-edit',
-            text: '下载',
+            text: '音频下载',
             handler: function () {
                 var c = $('#tt_album').treegrid('getSelected');
                 if (c.albumId == null) {
