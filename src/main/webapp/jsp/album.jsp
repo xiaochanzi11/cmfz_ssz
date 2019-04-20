@@ -77,8 +77,24 @@
                     //alert(c)
                     openMusic(c);
                 }
+            }
+        }, '-', {
+            iconCls: 'icon-edit',
+            text: '数据导出',
+            handler: function () {
 
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/album/exportXls",
 
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        if (data.flag) {
+                            alert("导出成功")
+                        } else {
+                            alert("导出失败")
+                        }
+                    }
+                })
             }
         }];
 

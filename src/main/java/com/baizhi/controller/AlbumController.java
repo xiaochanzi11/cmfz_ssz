@@ -1,7 +1,11 @@
 package com.baizhi.controller;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.baizhi.entity.Album;
+import com.baizhi.mapper.AlbumMapper;
 import com.baizhi.service.AlbumService;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -20,6 +25,9 @@ public class AlbumController {
     @Autowired
     AlbumService albumService;
 
+    @Autowired
+    AlbumMapper albumMapper;
+
     @RequestMapping("select")
     public List<Album> queryAll() {
         List<Album> list = albumService.queryAll();
@@ -29,7 +37,6 @@ public class AlbumController {
     @RequestMapping("selectAlbum")
     public List<Album> selectAlbum() {
         List<Album> list = albumService.selectAlbum();
-        System.out.println(list);
         return list;
     }
 
@@ -62,6 +69,24 @@ public class AlbumController {
         } catch (Exception e) {
             map.put("isadd", false);
             e.printStackTrace();
+        }
+        return map;
+    }
+
+    @RequestMapping("exportXls")
+    public Map exportXls() {
+        Map map = new HashMap();
+        List<Album> list = albumMapper.select1();
+        for (Album album : list) {
+            album.setImgPath("D:\\cmfz_ssz\\cmfz_ssz\\src\\main\\webapp\\jsp\\images\\audioCollection\\" + album.getImgPath());
+        }
+        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("持明法洲专辑", "专辑详情"), Album.class, list);
+        try {
+            workbook.write(new FileOutputStream(new File("D:/easypoi_cmfz_album.xls")));
+            map.put("flag", true);
+        } catch (IOException e) {
+            e.printStackTrace();
+            map.put("flag", false);
         }
         return map;
     }
