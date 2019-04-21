@@ -83,17 +83,10 @@
             text: '数据导出',
             handler: function () {
 
+                exportXls();
                 $.ajax({
                     url: "${pageContext.request.contextPath}/album/exportXls",
 
-                    success: function (data) {
-                        data = JSON.parse(data);
-                        if (data.flag) {
-                            alert("导出成功")
-                        } else {
-                            alert("导出失败")
-                        }
-                    }
                 })
             }
         }];
@@ -239,6 +232,10 @@
 
     function downLoad(c) {
         window.location.href = ("${pageContext.request.contextPath}/chapter/download.do?id=" + c)
+    }
+
+    function exportXls() {
+        window.location.href = ("${pageContext.request.contextPath}/album/exportXls")
     }
 
     function openMusic(c) {

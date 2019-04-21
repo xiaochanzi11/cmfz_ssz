@@ -37,4 +37,9 @@ public class UserServiceImpl implements UserService {
         userMapper.insert(user);
 
     }
+
+    @Override
+    public void update(User user) {
+        userMapper.updateByPrimaryKeySelective(user);
+    }
 }

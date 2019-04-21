@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,22 +59,49 @@ public class UserController {
     }
 
     @RequestMapping("exportXls")
-    public Map exportXls() {
-        Map map = new HashMap();
+    public void exportXls(HttpServletResponse response) {
         List<User> list = userMapper.selectAll();
         for (User user : list) {
             user.setHeadImg("D:\\cmfz_ssz\\cmfz_ssz\\src\\main\\webapp\\jsp\\images\\user\\" + user.getHeadImg());
         }
         Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("持明法洲注册用户", "用户"), User.class, list);
+        String oldName = "easypoi_cmfz_user.xlsx";
+        String encode = null;
         try {
-            workbook.write(new FileOutputStream(new File("D:/easypoi_cmfz_user.xls")));
-            map.put("flag", true);
+            encode = URLEncoder.encode(oldName, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //设置响应头
+        response.setHeader("Content-Disposition", "attachment;fileName=" + encode);
+        ServletOutputStream outputStream = null;
+        try {
+            outputStream = response.getOutputStream();
+            //直接将写入到输出流中即可;
+            workbook.write(outputStream);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping("upStatus")
+    public Map upStatus(User user) {
+        Map map = new HashMap();
+        if (user.getStatus() == 0) {
+            user.setStatus(1);
+        } else {
+            user.setStatus(0);
+        }
+        try {
+            userService.update(user);
+            map.put("flag", true);
+        } catch (Exception e) {
             e.printStackTrace();
             map.put("flag", false);
         }
         return map;
     }
+
 
     /*@RequestMapping("delete")
     public Map delete(User user) {

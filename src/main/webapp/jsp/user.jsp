@@ -13,9 +13,14 @@
             }
         }, '-', {
             iconCls: 'icon-edit',
-            text: '冻结选中账户',
+            text: '更改选中账户状态',
             handler: function () {
-                $('#dg_user').edatagrid('saveRow');
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/user/upStatus",
+                    success: function () {
+                        $('#dg_user').edatagrid("load")
+                    }
+                })
             }
         }, '-', {
             iconCls: 'icon-delete',
@@ -34,21 +39,7 @@
             iconCls: 'icon-edit',
             text: '数据导出',
             handler: function () {
-
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/user/exportXls",
-
-                    success: function (data) {
-                        data = JSON.parse(data);
-                        if (data.flag) {
-                            alert("导出成功")
-                        } else {
-                            alert("导出失败")
-                        }
-                    }
-                })
-
-
+                exportXls()
             }
         }];
 
@@ -137,6 +128,10 @@
 
     function closeff() {
         $('#dd_user').dialog('close');
+    }
+
+    function exportXls() {
+        window.location.href = ("${pageContext.request.contextPath}/user/exportXls")
     }
 
 </script>

@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 
 @RestController
@@ -74,20 +77,28 @@ public class AlbumController {
     }
 
     @RequestMapping("exportXls")
-    public Map exportXls() {
-        Map map = new HashMap();
+    public void exportXls(HttpServletResponse response) {
         List<Album> list = albumMapper.select1();
         for (Album album : list) {
             album.setImgPath("D:\\cmfz_ssz\\cmfz_ssz\\src\\main\\webapp\\jsp\\images\\audioCollection\\" + album.getImgPath());
         }
         Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("持明法洲专辑", "专辑详情"), Album.class, list);
+        String oldName = "easypoi_cmfz_album.xlsx";
+        String encode = null;
         try {
-            workbook.write(new FileOutputStream(new File("D:/easypoi_cmfz_album.xls")));
-            map.put("flag", true);
+            encode = URLEncoder.encode(oldName, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //设置响应头
+        response.setHeader("Content-Disposition", "attachment;fileName=" + encode);
+        ServletOutputStream outputStream = null;
+        try {
+            outputStream = response.getOutputStream();
+            //直接将写入到输出流中即可;
+            workbook.write(outputStream);
         } catch (IOException e) {
             e.printStackTrace();
-            map.put("flag", false);
         }
-        return map;
     }
 }
