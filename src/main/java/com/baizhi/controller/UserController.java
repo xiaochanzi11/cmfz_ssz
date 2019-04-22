@@ -2,9 +2,11 @@ package com.baizhi.controller;
 
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
+import com.alibaba.fastjson.JSONObject;
 import com.baizhi.entity.User;
 import com.baizhi.mapper.UserMapper;
 import com.baizhi.service.UserService;
+import io.goeasy.GoEasy;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +43,7 @@ public class UserController {
 
     @RequestMapping("insert")
     public Map insert(User user, MultipartFile image) throws IOException {
-        System.out.println(user + "userController");
+        //System.out.println(user + "userController");
         String uuid = UUID.randomUUID().toString();
         String oldName = image.getOriginalFilename();
         String newName = uuid + oldName.substring(oldName.lastIndexOf("."));
@@ -50,6 +52,10 @@ public class UserController {
         Map map = new HashMap();
         try {
             userService.insert(user);
+            List<Integer> list = userService.echarts();
+            GoEasy goEasy = new GoEasy("http://rest-hangzhou.goeasy.io", "BC-815b87e03de84e63ac875abcc90d8a8b");
+            String s = JSONObject.toJSONString(list);
+            goEasy.publish("user_charts", s);
             map.put("flag", true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,6 +92,7 @@ public class UserController {
 
     @RequestMapping("upStatus")
     public Map upStatus(User user) {
+        System.out.println(user);
         Map map = new HashMap();
         if (user.getStatus() == 0) {
             user.setStatus(1);
@@ -105,22 +112,25 @@ public class UserController {
     @RequestMapping("echarts")
     public List<Integer> echarts() {
         List<Integer> list = userService.echarts();
-        System.out.println(list);
+
         return list;
     }
 
     @RequestMapping("china")
     public Map china() {
-        System.out.println(userService.UserCount());
         return userService.UserCount();
     }
 
 
-    /*@RequestMapping("delete")
+   /*@RequestMapping("delete")
     public Map delete(User user) {
         Map map = new HashMap();
         try {
             userService.
+            List<Integer> list = userService.echarts();
+            GoEasy goEasy = new GoEasy("http://rest-hangzhou.goeasy.io", "BC-815b87e03de84e63ac875abcc90d8a8b");
+            String s = JSONObject.toJSONString(list);
+            goEasy.publish("user_charts",s);
             map.put("flag", true);
         } catch (Exception e) {
             e.printStackTrace();

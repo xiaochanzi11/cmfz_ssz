@@ -134,6 +134,10 @@
         window.location.href = ("${pageContext.request.contextPath}/user/exportXls")
     }
 
+    function upStatus() {
+
+    }
+
 </script>
 <table id="dg_user"></table>
 

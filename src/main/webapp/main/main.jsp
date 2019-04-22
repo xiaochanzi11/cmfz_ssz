@@ -17,6 +17,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath }/js/echarts.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath }/js/china.js"></script>
 
+    <script type="text/javascript" src="http://cdn-hangzhou.goeasy.io/goeasy.js"></script>
+
     <script type="text/javascript">
         $(function () {
             $.ajax({
@@ -68,12 +70,6 @@
                 });
             } else {
                 $('#tt').tabs('select', second.title);
-                //获得当前选中的tab
-                var tab = $('#tt').tabs('getSelected');
-                //获得当前选中的tab 的href
-                var url = $(tab.panel('options')).attr('href');
-                tab.panel('refresh', url);
-
             }
 
         }
