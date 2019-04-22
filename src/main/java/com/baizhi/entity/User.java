@@ -51,4 +51,7 @@ public class User implements Serializable {
     @Transient
     private Master master;
 
+    @Transient
+    private Integer counts;
+
 }

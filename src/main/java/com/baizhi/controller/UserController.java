@@ -102,6 +102,19 @@ public class UserController {
         return map;
     }
 
+    @RequestMapping("echarts")
+    public List<Integer> echarts() {
+        List<Integer> list = userService.echarts();
+        System.out.println(list);
+        return list;
+    }
+
+    @RequestMapping("china")
+    public Map china() {
+        System.out.println(userService.UserCount());
+        return userService.UserCount();
+    }
+
 
     /*@RequestMapping("delete")
     public Map delete(User user) {

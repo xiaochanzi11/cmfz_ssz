@@ -13,6 +13,10 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/datagrid-detailview.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.edatagrid.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui-lang-zh_CN.js"></script>
+    <!-- 引入 echarts.js -->
+    <script type="text/javascript" src="${pageContext.request.contextPath }/js/echarts.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/js/china.js"></script>
+
     <script type="text/javascript">
         $(function () {
             $.ajax({
@@ -48,7 +52,7 @@
             if (!isExists) {
                 $('#tt').tabs('add', {
                     title: second.title,
-                    href: '${pageContext.request.contextPath}/jsp/' + second.jspUrl,
+                    href: url,
                     iconCls: second.iconCls,
                     closable: true,
                     tools: [{
@@ -64,6 +68,12 @@
                 });
             } else {
                 $('#tt').tabs('select', second.title);
+                //获得当前选中的tab
+                var tab = $('#tt').tabs('getSelected');
+                //获得当前选中的tab 的href
+                var url = $(tab.panel('options')).attr('href');
+                tab.panel('refresh', url);
+
             }
 
         }
