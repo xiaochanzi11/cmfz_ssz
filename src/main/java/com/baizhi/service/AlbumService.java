@@ -10,7 +10,11 @@ public interface AlbumService {
 
     Album selectAlbumByid(String id);
 
-    public List<Album> selectAlbum();
+    List<Album> selectAlbum();
 
     void insert(Album album);
+
+    Album selectOne1(String id);
+
+    void update(Album album);
 }

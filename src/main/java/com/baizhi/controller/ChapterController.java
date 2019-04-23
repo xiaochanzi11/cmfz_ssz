@@ -33,6 +33,29 @@ public class ChapterController {
         return chapter;
     }
 
+    @RequestMapping("update")
+    public Map update(MultipartFile file, Chapter chapter) throws IOException {
+        Map map = new HashMap();
+        String oldName = file.getOriginalFilename();
+        //2.将接收的文件复制到服务器上
+        /*String uuid = UUID.randomUUID().toString();
+//        System.out.println("action 文件名"+oldName);
+        String newname = uuid + oldName.substring(oldName.lastIndexOf("."));*/
+        File file1 = new File("D:\\cmfz_ssz\\cmfz_ssz\\src\\main\\webapp\\jsp\\chapter\\" + oldName);
+        file.transferTo(file1);
+        chapter.setDownloadPath(oldName);
+        chapter.setSize(getPrintSize(file.getSize()));
+        chapter.setDuration(AudioUtil.getDuration(file1).toString());
+        try {
+            chapterService.update(chapter);
+            map.put("isupdate", true);
+        } catch (Exception e) {
+            map.put("isupdate", false);
+            e.printStackTrace();
+        }
+        return map;
+    }
+
     @RequestMapping("insert")
     public Map addchapter(MultipartFile file, Chapter chapter) throws IOException {
         Map map = new HashMap<>();

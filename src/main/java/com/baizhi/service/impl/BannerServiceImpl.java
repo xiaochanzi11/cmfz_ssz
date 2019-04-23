@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service("bannerService")
@@ -46,5 +47,11 @@ public class BannerServiceImpl implements BannerService {
     @Override
     public void update(Banner banner) {
         bannerMapper.updateByPrimaryKeySelective(banner);
+    }
+
+    @Override
+    public List<Banner> selectAll() {
+        List<Banner> banners = bannerMapper.selectAll();
+        return banners;
     }
 }

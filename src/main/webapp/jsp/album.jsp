@@ -51,12 +51,28 @@
 
             }
         }, '-', {
+            iconCls: 'icon-add',
+            text: '修改数据',
+            handler: function () {
+                var c = $('#tt_album').treegrid('getSelected');
+                if (c.albumId == null) {
+                    //专辑
+                    console.log(c.id)
+                    openupdateAlbum(c.id)
+                } else {
+                    //章节
+                    console.log(c.id)
+                    openupdateChapter(c.id)
+                }
+
+            }
+        }, '-', {
             iconCls: 'icon-edit',
             text: '音频下载',
             handler: function () {
                 var c = $('#tt_album').treegrid('getSelected');
                 if (c.albumId == null) {
-                    alert("请选择一个章节")
+                    alert("请选择一个音频")
                 } else {
                     c = c.id;
                     //alert(c)
@@ -176,7 +192,7 @@
     }
 
 
-    function addChapter(data) {
+    function addChapter() {
         $('#ff_chapter').form('submit', {
 
             url: '${pageContext.request.contextPath}/chapter/insert',
@@ -192,6 +208,50 @@
                     $('#tt_album').treegrid('load');
                 } else {
                     alert("添加失败, 请重新添加")
+                }
+            }
+        });
+    }
+
+    //修改专辑发送请求
+    function updateAlbum() {
+        $('#updateff_album').form('submit', {
+
+            url: '${pageContext.request.contextPath}/album/update',
+
+            onSubmit: function () {
+
+                return $("#updateff_album").form("validate");
+            },
+            success: function (data) {
+                data = JSON.parse(data);
+                if (data.isupdate) {
+                    $('#update_album').dialog('close');
+                    $('#tt_album').treegrid('load');
+                } else {
+                    alert("修改失败")
+                }
+            }
+        });
+    }
+
+    //修改章节发送请求
+    function updateChapter() {
+        $('#updateff_chapter').form('submit', {
+
+            url: '${pageContext.request.contextPath}/chapter/update',
+
+            onSubmit: function () {
+
+                return $("#updateff_chapter").form("validate");
+            },
+            success: function (data) {
+                data = JSON.parse(data);
+                if (data.isupdate) {
+                    $('#update_chapter').dialog('close');
+                    $('#tt_album').treegrid('load');
+                } else {
+                    alert("修改失败")
                 }
             }
         });
@@ -214,6 +274,50 @@
                 $("#albumImg").prop("src", "${pageContext.request.contextPath}/jsp//images/audioCollection/" + data.imgPath);
 
                 $("#dd_album_display").dialog("open");
+
+            }
+        })
+    }
+
+    //修改专辑对话框
+    function openupdateAlbum(c) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/album/selectOne",
+            type: "get",
+            data: "id=" + c,
+            dataType: "json",
+            success: function (data) {
+                console.log(data.title)
+                $("#updateid").val(data.id);
+                $("#updatename").val(data.title);
+                $("#updateamount").val(data.amount);
+                $("#updatescore").val(data.score);
+                $("#updateauthor").val(data.author);
+                $("#updateboardcast").val(data.boardcast);
+                $("#updatebrief").val(data.brief);
+                $("#updateImgPath").html(data.imgPath);
+                $("#updatealbumImg").prop("src", "${pageContext.request.contextPath}/jsp//images/audioCollection/" + data.imgPath);
+
+                $("#update_album").dialog("open");
+            }
+        })
+    }
+
+    //修改章节对话框
+    function openupdateChapter(c) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/chapter/selectOne",
+            type: "get",
+            data: "id=" + c,
+            dataType: "json",
+            success: function (data) {
+                console.log(data.downloadPath)
+                $("#updateid2").val(data.id);
+                $("#updatename2").val(data.title);
+
+                $("#updatedownloadPath").html(data.downloadPath);
+
+                $("#update_chapter").dialog("open");
 
             }
         })
@@ -259,6 +363,7 @@
 
 </script>
 <table id="tt_album" style="width:600px;height:400px"></table>
+//专辑详情对话框
 <div id="dd_album_display" class="easyui-dialog" title="专辑详情" style="width:400px;height:400px;"
      data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,
             buttons:[{
@@ -274,9 +379,10 @@
     <p>专辑播音：&nbsp; <span id="albumBoardCast"></span></p>
     <p>出版时间：&nbsp; <span id="albumTime"></span></p>
     <p>描述 ：&nbsp;<span id="albumBrief"></span>
-    <p>专辑封面 :<img id="albumImg" width="70px" height="100px"/></p>
+    <p>专辑封面 :</p><img id="albumImg" width="70px" height="100px"/>
 
 </div>
+//添加专辑
 <div id="dd_album" class="easyui-dialog" title="添加专辑" style="width:400px;height:400px;"
      data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,
             buttons:[{
@@ -319,6 +425,52 @@
     </form>
 
 </div>
+//修改专辑
+<div id="update_album" class="easyui-dialog" title="修改专辑信息" style="width:400px;height:400px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,
+            buttons:[{
+				text:'保存',
+				handler:function(){
+				    updateAlbum();
+				}
+			},{
+				text:'关闭',
+				handler:function(){
+				    $('#update_album').dialog('close');
+				}
+			}]">
+    <form id="updateff_album" method="post" enctype="multipart/form-data">
+        <input id="updateid" type="hidden" name="id" value=""/>
+        <div>
+            <label for="updatename">标题:</label>
+            <input id="updatename" class="easyui-validatebox" type="text" name="title" data-options="required:true"/>
+        </div>
+        <div>
+            <label for="updateamount">集数:</label>
+            <input id="updateamount" class="easyui-validatebox" type="text" name="amount" data-options="required:true"/>
+        </div>
+        <div>
+            <label for="updatescore">评分:</label>
+            <input id="updatescore" class="easyui-validatebox" type="text" name="score" data-options="required:true"/>
+        </div>
+        <div>
+            <label for="updateauthor">作者:</label>
+            <input id="updateauthor" class="easyui-validatebox" type="text" name="author" data-options="required:true"/>
+        </div>
+        <div>
+            <label for="updateboardcast">播音员:</label>
+            <input id="updateboardcast" class="easyui-validatebox" type="text" name="boardcast"
+                   data-options="required:true"/>
+        </div>
+        <div>
+            <label for="updatebrief">简介:</label>
+            <input id="updatebrief" class="easyui-validatebox" type="text" name="brief" data-options="required:true"/>
+        </div>
+        <input value="" class="easyui-filebox" style="width:150px" name="file"><span id="updateImgPath"></span>
+        <p>专辑封面 :</p><img id="updatealbumImg" width="70px" height="100px"/>
+    </form>
+
+</div>
 
 //添加章节
 <div id="dd_chapter" class="easyui-dialog" title="添加章节" style="width:400px;height:400px;"
@@ -339,14 +491,37 @@
             <label for="cname">标题:</label>
             <input id="cname" class="easyui-validatebox" type="text" name="title" data-options="required:true"/>
         </div>
-        <%--<div id="selectAlbum">
-            <label >专辑:</label>
-            &lt;%&ndash;<select  class="form-control error map" style="outline:none;height: 30px;width: 300px;" name="albumId">
 
-            </select>&ndash;%&gt;
-        </div>--%>
         <label>上传文件:</label>
         <input class="easyui-filebox" style="width:150px" name="file">
+    </form>
+
+</div>
+
+//修改章节
+<div id="update_chapter" class="easyui-dialog" title="修改章节信息" style="width:400px;height:400px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true,
+            buttons:[{
+				text:'保存',
+				handler:function(){
+				    updateChapter();
+				}
+			},{
+				text:'关闭',
+				handler:function(){
+				    $('#updatedd_chapter').dialog('close');
+				}
+			}]">
+    <form id="updateff_chapter" method="post" enctype="multipart/form-data">
+        <input id="updateid2" type="hidden" name="id" value=""/>
+        <div>
+            <label for="updatename2">标题:</label>
+            <input id="updatename2" class="easyui-validatebox" type="text" name="title" data-options="required:true"/>
+        </div>
+
+        <label>更改音频文件:</label>
+        <input value="" class="easyui-filebox" style="width:150px" name="file"><span id="updatedownloadPath"></span>
+
     </form>
 
 </div>

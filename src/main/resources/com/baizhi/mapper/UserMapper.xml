@@ -56,5 +56,12 @@
         group by province
     </select>
 
+    <select id="selectOne1" resultMap="userResultMap">
+        select *
+        from user
+        where phone = #{phone}
+          and password = #{password}
+    </select>
+
 
 </mapper>

@@ -4,7 +4,6 @@ import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.alibaba.fastjson.JSONObject;
 import com.baizhi.entity.User;
-import com.baizhi.mapper.UserMapper;
 import com.baizhi.service.UserService;
 import io.goeasy.GoEasy;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -33,14 +32,20 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    UserMapper userMapper;
 
     @RequestMapping("selectAll")
     public Map selectAll(int page, int rows) {
         return userService.queryAll(page, rows);
     }
 
+    //登录
+    @RequestMapping("login")
+    public Object login(String phone, String password) {
+        Object o = userService.selectOne(phone, password);
+        return o;
+    }
+
+    //注册
     @RequestMapping("insert")
     public Map insert(User user, MultipartFile image) throws IOException {
         //System.out.println(user + "userController");
@@ -66,7 +71,7 @@ public class UserController {
 
     @RequestMapping("exportXls")
     public void exportXls(HttpServletResponse response) {
-        List<User> list = userMapper.selectAll();
+        List<User> list = userService.selectAll();
         for (User user : list) {
             user.setHeadImg("D:\\cmfz_ssz\\cmfz_ssz\\src\\main\\webapp\\jsp\\images\\user\\" + user.getHeadImg());
         }
@@ -112,7 +117,6 @@ public class UserController {
     @RequestMapping("echarts")
     public List<Integer> echarts() {
         List<Integer> list = userService.echarts();
-
         return list;
     }
 

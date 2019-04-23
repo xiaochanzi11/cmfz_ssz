@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface AlbumMapper extends Mapper<Album> {
 
-    public List<Album> select1();
+    List<Album> select1();
 
-    public List<Album> selectAlbum();
+    List<Album> selectAlbum();
+
+    Album selectOne1(String id);
 
 
 }

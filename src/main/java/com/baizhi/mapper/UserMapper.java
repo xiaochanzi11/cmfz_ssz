@@ -1,6 +1,7 @@
 package com.baizhi.mapper;
 
 import com.baizhi.entity.User;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -8,14 +9,17 @@ import java.util.List;
 
 public interface UserMapper extends Mapper<User> {
 
-    public Integer echarts1();
+    Integer echarts1();
 
-    public Integer echarts2();
+    Integer echarts2();
 
-    public Integer echarts3();
+    Integer echarts3();
 
-    public List<User> selectMaleCount();
+    List<User> selectMaleCount();
 
-    public List<User> selectFemaleCount();
+    List<User> selectFemaleCount();
+
+    User selectOne1(@Param("phone") String phone, @Param("password") String password);
+
 
 }

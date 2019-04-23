@@ -21,7 +21,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public List<Album> queryAll() {
         List<Album> list = albumMapper.select1();
-        System.out.println(list);
+        //System.out.println(list);
         return list;
     }
 
@@ -40,4 +40,21 @@ public class AlbumServiceImpl implements AlbumService {
     public void insert(Album album) {
         albumMapper.insert(album);
     }
+
+    //有映射关系的
+    @Override
+    public Album selectOne1(String id) {
+        Album album = albumMapper.selectOne1(id);
+        return album;
+    }
+
+
+    @Override
+    public void update(Album album) {
+        albumMapper.updateByPrimaryKeySelective(album);
+    }
+
+
+
+
 }

@@ -18,4 +18,8 @@ public interface UserService {
 
     Map UserCount();
 
+    List<User> selectAll();
+
+    Object selectOne(String phone, String password);
+
 }

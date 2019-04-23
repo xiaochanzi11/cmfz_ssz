@@ -22,4 +22,5 @@ public class MenuController {
         List<Menu> list = menuService.queryAll();
         return list;
     }
+
 }

@@ -5,8 +5,10 @@ import com.baizhi.entity.Chapter;
 
 
 public interface ChapterService {
-    // public void insertByAlbumId(Chapter chapter);
-    public void insert(Chapter chapter);
 
-    public Chapter selectOne(Chapter chapter);
+    void insert(Chapter chapter);
+
+    Chapter selectOne(Chapter chapter);
+
+    void update(Chapter chapter);
 }

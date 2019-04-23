@@ -101,4 +101,31 @@ public class AlbumController {
             e.printStackTrace();
         }
     }
+
+    @RequestMapping("selectOne")
+    public Album selectOne(String id) {
+        Album album = albumService.selectOne1(id);
+        return album;
+    }
+
+    @RequestMapping("update")
+    public Map update(MultipartFile file, Album album) throws IOException {
+        Map map = new HashMap();
+        String oldName = file.getOriginalFilename();
+        //2.将接收的文件复制到服务器上
+        String uuid = UUID.randomUUID().toString();
+//        System.out.println("action 文件名"+oldName);
+        String newname = uuid + oldName.substring(oldName.lastIndexOf("."));
+        file.transferTo(new File("D:\\cmfz_ssz\\cmfz_ssz\\src\\main\\webapp\\jsp\\images\\audioCollection\\" + newname));
+
+        album.setImgPath(newname);
+        try {
+            albumService.update(album);
+            map.put("isupdate", true);
+        } catch (Exception e) {
+            map.put("isupdate", false);
+            e.printStackTrace();
+        }
+        return map;
+    }
 }
