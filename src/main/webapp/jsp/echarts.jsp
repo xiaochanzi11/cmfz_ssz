@@ -8,7 +8,9 @@
 </head>
 <body>
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="echartsmain" style="width: 600px;height:400px;"></div>
+<div align="center">
+    <div id="echartsmain" style="width: 800px;height:600px;"></div>
+</div>
 
 
 <script type="text/javascript">
