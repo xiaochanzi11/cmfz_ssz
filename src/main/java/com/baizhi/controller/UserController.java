@@ -126,35 +126,5 @@ public class UserController {
     }
 
 
-   /*@RequestMapping("delete")
-    public Map delete(User user) {
-        Map map = new HashMap();
-        try {
-            userService.
-            List<Integer> list = userService.echarts();
-            GoEasy goEasy = new GoEasy("http://rest-hangzhou.goeasy.io", "BC-815b87e03de84e63ac875abcc90d8a8b");
-            String s = JSONObject.toJSONString(list);
-            goEasy.publish("user_charts",s);
-            map.put("flag", true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("flag", false);
-        }
-        return map;
-    }
-
-    @RequestMapping("update")
-    public Map update(Banner banner) {
-        Map map = new HashMap();
-        try {
-            bannerService.update(banner);
-            map.put("flag", true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("flag", false);
-        }
-        return map;
-    }*/
-
 
 }

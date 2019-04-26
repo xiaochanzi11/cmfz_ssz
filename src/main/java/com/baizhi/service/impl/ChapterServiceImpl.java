@@ -19,7 +19,6 @@ public class ChapterServiceImpl implements ChapterService {
     @Override
     public void insert(Chapter chapter) {
         chapter.setPublishDate(new Date());
-        //System.out.println(chapter+"11111111111111111111");
         chapterMapper.insert(chapter);
     }
 
