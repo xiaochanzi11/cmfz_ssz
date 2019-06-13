@@ -100,10 +100,10 @@
             handler: function () {
 
                 exportXls();
-                $.ajax({
+                /*$.ajax({
                     url: "${pageContext.request.contextPath}/album/exportXls",
 
-                })
+                })*/
             }
         }];
 

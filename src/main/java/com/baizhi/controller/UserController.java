@@ -40,9 +40,23 @@ public class UserController {
 
     //登录
     @RequestMapping("login")
+    /*public Object login(String name, String password) {
+        UsernamePasswordToken token =new UsernamePasswordToken(name,password);
+        Subject subject= SecurityUtils.getSubject();
+
+        try {
+            subject.login(token);
+        } catch (UnknownAccountException e) {
+            return "redirect:/login.jsp";
+        }catch(IncorrectCredentialsException e1){
+            return "redirect:/login.jsp";
+        }
+        return "redirect:/main/main.jsp";
+    }*/
     public Object login(String phone, String password) {
         Object o = userService.selectOne(phone, password);
         return o;
+
     }
 
     //注册

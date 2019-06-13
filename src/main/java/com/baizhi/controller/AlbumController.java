@@ -1,5 +1,6 @@
 package com.baizhi.controller;
 
+
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.baizhi.entity.Album;
@@ -22,7 +23,6 @@ import java.util.*;
 
 @RestController
 @RequestMapping("album")
-@ResponseBody
 public class AlbumController {
 
     @Autowired
@@ -52,7 +52,6 @@ public class AlbumController {
 
 
     @RequestMapping("addalbum")
-    @ResponseBody
     public Map addalbum(MultipartFile file, Album album) throws IOException {
         Map map = new HashMap<>();
         String oldName = file.getOriginalFilename();

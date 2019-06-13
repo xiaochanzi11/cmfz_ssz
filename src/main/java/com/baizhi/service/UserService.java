@@ -20,6 +20,6 @@ public interface UserService {
 
     List<User> selectAll();
 
-    Object selectOne(String phone, String password);
+    Object selectOne(String name, String password);
 
 }
